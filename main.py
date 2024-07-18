@@ -28,8 +28,8 @@ async def index_page():
     '''Ахахахахахахаххахахахахахахахахх'''
     try:
         await db.initialize()
-        # dp.include_router(bot_admin_router)
-        # await bot.set_webhook(config.webhook_url, drop_pending_updates=True)
+        dp.include_router(bot_admin_router)
+        await bot.set_webhook(config.webhook_url, drop_pending_updates=True)
         return {"Status": True, "init": 'Success'}
     except Exception as e:
         return {"Status": False, "init": f"err: {e}"}
@@ -43,6 +43,8 @@ async def webhook(update: dict[str, Any]):
 @app.on_event('startup')
 async def on_startup():
     await db.initialize()
+    if not os.path.exists('images'):
+        os.mkdir('images')
     if not os.path.exists('images/backgrounds'):
         os.mkdir('images/backgrounds')
     for image in await db.background_images.get_images():
@@ -55,8 +57,8 @@ async def on_startup():
         if not os.path.exists(f'images/cards/{image["tour_id"]}.png'):
             with open(f'images/cards/{image["tour_id"]}.png', 'wb') as f:
                 f.write(image["data"])
-    # dp.include_router(bot_admin_router)
-    # await bot.set_webhook(config.webhook_url, drop_pending_updates=True)
+    dp.include_router(bot_admin_router)
+    await bot.set_webhook(config.webhook_url, drop_pending_updates=True)
 
 @app.get('/images/card/{image}')
 async def get_cards_imagesPage(image: str):
