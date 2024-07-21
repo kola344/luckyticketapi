@@ -240,8 +240,6 @@ async def none_button_callback(call):
 
 @router.callback_query(F.data.startswith('res'))
 async def callbackres(call, state: FSMContext):
-    print(call.data)
-    print('bobik')
     calls = str(call.data).split(sep='.')
     l1 = calls[0]
     l2 = calls[1]
