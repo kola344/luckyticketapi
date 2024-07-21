@@ -135,6 +135,12 @@ class info_table:
         async with self.db.acquire() as connection:
             await connection.execute('''UPDATE info_table SET occupied_seats = $1 WHERE id = $2''', occupied_seats, item_id)
 
+    async def add_occupied_seats(self, item_id, count):
+        async with self.db.acquire() as connection:
+            row = await connection.fetchrow('''SELECT occupied_seats FROM info_table WHERE id = $1''', item_id)
+            new_occupied_seats = row[0] + count
+            await self.update_occupied_seats(item_id, new_occupied_seats)
+
     async def update_seats(self, item_id, seats):
         async with self.db.acquire() as connection:
             await connection.execute('''UPDATE info_table SET seats = $1 WHERE id = $2''', seats, item_id)
@@ -192,7 +198,7 @@ class tours:
 
     async def get_cards(self):
         async with self.db.acquire() as connection:
-            cursor = await connection.fetch('''SELECT id, name, description, duration, card_image FROM tours WHERE main_card = $1''', 0)
+            cursor = await connection.fetch('''SELECT id, name, description, duration, card_image FROM tours''')
             result = []
             for data in cursor:
                 prices = await db.info_table.get_prices(data["id"])
@@ -300,6 +306,11 @@ class tours:
             days_info = json.loads(row[0])
             days_info.pop(day_id)
             await self.update_days_info(tour_id, days_info)
+
+    async def get_tour_name_by_id(self, tour_id):
+        async with self.db.acquire() as connection:
+            row = await connection.fetchrow('''SELECT name FROM tours WHERE id = $1''', tour_id)
+            return row[0]
 
     async def truncate(self):
         async with self.db.acquire() as connection:

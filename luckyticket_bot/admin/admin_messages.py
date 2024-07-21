@@ -229,6 +229,39 @@ async def reg_admin_command(message: Message):
     else:
         await message.answer(replic_403)
 
+@router.callback_query(F.data == 'none')
+async def none_button_callback(call):
+    try:
+        await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=keyboards.none_button)
+        await asyncio.sleep(1)
+        await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=call.message.reply_markup)
+    except Exception as e:
+        print(e)
+
+@router.callback_query(F.data.startswith('res'))
+async def callback(call, state: FSMContext):
+    print(call.data)
+    user_id = call.message.chat.id
+    if await db.tg_admins.check_admin_by_user_id(user_id):
+        calls = str(call.data).split(sep='.')
+        l1 = calls[0]
+        l2 = calls[1]
+        l3 = calls[2]
+        await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=keyboards.loading_menu)
+        if l2 == 'do':
+            if l3 == 'cancel':
+                await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=keyboards.reservation_cancelled)
+        else:
+            if ':' in l2:
+                splited_l2 = l2.split(':')
+                k1, k2 = splited_l2[0], splited_l2[1]
+                if k1 == 'accept':
+                    await db.info_table.add_occupied_seats(int(k2), int(l3))
+                    markup = await keyboards.get_reservations_markup_accepted(int(k2))
+                    await bot.edit_message_reply_markup(chat_id=call.message.chat.id,
+                                                        message_id=call.message.message_id,
+                                                        reply_markup=markup)
+
 @router.callback_query(F.data.startswith('admin'))
 async def callback(call, state: FSMContext):
     print(call.data)

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, Response
 from routers.tours.cards import router as cards_router
+from routers.tours.reservation import router as reservation_router
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import db
@@ -21,15 +22,13 @@ app.add_middleware(
 )
 
 app.include_router(cards_router, prefix="/tours/cards", tags=["cards"])
-
+app.include_router(reservation_router, prefix='/tours/reservations', tags=["reservations"])
 
 @app.get('/')
 async def index_page():
     '''Ахахахахахахаххахахахахахахахахх'''
     try:
         await db.initialize()
-        dp.include_router(bot_admin_router)
-        await bot.set_webhook(config.webhook_url, drop_pending_updates=True)
         return {"Status": True, "init": 'Success'}
     except Exception as e:
         return {"Status": False, "init": f"err: {e}"}

@@ -130,3 +130,4 @@ async def replic_menu_editor_departure(tour_id, departure_id):
     text = (f'Отправление от: {data["departure_time"]}\nДо: {data["arrival_time"]}\nАвтобус: {data["bus"]}\nЗанято мест: {data["occupied_seats"]}\nСвободных мест: {data["seats"] - data["occupied_seats"]}\nВсего мест: {data["seats"]}')
     return text, markup
 
+
