@@ -14,13 +14,12 @@ async def send_reservation_to_chat(tour_id, departure_id, name, phone_number, em
     for i in range(len(variations)):
         variation_data = variations_data[i]
         print(variation_data)
-        variation_count = variations[i].count
-        count += variation_count
+        variation_person = variations[i].name
+        count += 1
         variation_name = variation_data["variation"]
         variation_price = variation_data["price"]
-        new_price = variation_price * variation_count
-        price += new_price
-        text += f'{variation_name}: {variation_price} x {variation_count} = {new_price}\n'
+        price += variation_price
+        text += f'{variation_person} - {variation_name}: {variation_price}\n'
     text += f'ИТОГО: {price}'
 
     markup = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='✅ Принять бронь', callback_data=f'res.accept:{departure_id}.{count}')],
