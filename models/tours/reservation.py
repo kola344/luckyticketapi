@@ -14,3 +14,9 @@ class reservationModel(BaseModel):
     messanger: str
     comment: str
     variations: List[variationsModel]
+
+class feedback_requestModel(BaseModel):
+    name: str
+    email: str
+    phone_number: str
+    message: str
