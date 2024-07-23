@@ -239,6 +239,15 @@ class tours:
                 cursor["days_info"] = json.loads(cursor["days_info"])
             return cursor
 
+    async def get_tour_departure_info(self, tour_id, departure_id):
+        async with self.db.acquire() as connection:
+            cursor = dict(await connection.fetchrow('''SELECT id, name, duration, description FROM tours WHERE id = $1''', tour_id))
+            items_cursor = await connection.fetchrow('''SELECT * FROM info_table WHERE id = $1''', departure_id)
+            print(items_cursor)
+            cursor["info_table"] = dict(items_cursor)
+            cursor["info_table"]["prices"] = json.loads(cursor["info_table"]["prices"])
+            return cursor
+
     async def update_name(self, tour_id, name):
         async with self.db.acquire() as connection:
             await connection.execute('''
