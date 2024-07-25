@@ -237,6 +237,10 @@ class tours:
                 cursor["days_info"] = []
             else:
                 cursor["days_info"] = json.loads(cursor["days_info"])
+            print(cursor)
+            cursor["variations"] = []
+            for i in cursor["info_table"][0]["prices"]:
+                cursor["variations"].append(i["variation"])
             return cursor
 
     async def get_tour_departure_info(self, tour_id, departure_id):
