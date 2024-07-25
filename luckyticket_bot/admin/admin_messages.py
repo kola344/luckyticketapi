@@ -229,6 +229,13 @@ async def reg_admin_command(message: Message):
     else:
         await message.answer(replic_403)
 
+@router.callback_query(F.data == 'nan')
+async def none_button_callback(call):
+    try:
+        await call.message.answer(replic_wait_please)
+    except Exception as e:
+        print(e)
+
 @router.callback_query(F.data == 'none')
 async def none_button_callback(call):
     try:

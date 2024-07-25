@@ -10,7 +10,7 @@ loading_menu = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text=
 reservation_accepted = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='✅ Бронь принята', callback_data='none')]])
 reservation_cancelled = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='❌ Бронь отменена', callback_data='none')]])
 
-none_button = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='❌ Кнопка не нажимается', callback_data='none')]])
+none_button = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='❌ Кнопка не нажимается', callback_data='nan')]])
 
 async def get_reservations_markup_accepted(departure_id):
     departure_data = await db.info_table.get_item_info(departure_id)

@@ -22,6 +22,7 @@ replic_edit_dep_variation = 'Введите новое название вари
 replic_edit_dep_int_error = 'Введенное значение должно быть числом'
 replic_edit_dep_occupied_seats_error = 'Число занятых мест не должно превышать общее число мест'
 replic_edit_dep_seats_error = 'Общее число мест не должно быть меньше занятого числа мест'
+replic_wait_please = 'Пожалуйста, подождите'
 
 def replic_del_tour_confirmation(tour_id):
     text = 'Вы действительно хотите удалить тур?'
