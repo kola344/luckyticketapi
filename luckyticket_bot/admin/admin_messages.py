@@ -265,168 +265,170 @@ async def callbackres(call, state: FSMContext):
 async def callback(call, state: FSMContext):
     print(call.data)
     user_id = call.message.chat.id
-    if await db.tg_admins.check_admin_by_user_id(user_id):
-        calls = str(call.data).split(sep='.')
-        l1 = calls[0]
-        l2 = calls[1]
-        l3 = calls[2]
-        await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=keyboards.loading_menu)
-        if l2 == 'main':
-            if l3 == 'main':
-                await bot.edit_message_text(replic_admin_panel, chat_id=user_id, message_id=call.message.message_id, reply_markup=keyboards.menu)
-        elif l2 == 'etourname':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            await state.set_state(models.tour_editorState.edit_name)
-            models.editor_tour_id[user_id] = int(l3)
-            await call.message.answer(replic_edit_tour_name)
-        elif l2 == 'etourdesc':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            await state.set_state(models.tour_editorState.edit_description)
-            models.editor_tour_id[user_id] = int(l3)
-            await call.message.answer(replic_edit_tour_description)
-        elif l2 == 'etoirdur':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            await state.set_state(models.tour_editorState.edit_duration)
-            models.editor_tour_id[user_id] = int(l3)
-            await call.message.answer(replic_edit_tour_duration)
-        elif l2 == 'etourimp':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            await state.set_state(models.tour_editorState.edit_important_text)
-            models.editor_tour_id[user_id] = int(l3)
-            await call.message.answer(replic_edit_tour_important_text)
-        elif l2 == 'etourcard':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            await state.set_state(models.tour_editorState.edit_card_image)
-            models.editor_tour_id[user_id] = int(l3)
-            await call.message.answer(replic_edit_tour_image)
-        elif l2 == 'etourback':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            await state.set_state(models.tour_editorState.edit_background_image)
-            models.editor_tour_id[user_id] = int(l3)
-            await call.message.answer(replic_edit_tour_image)
-        elif l2 == 'deltour':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            text, markup = replic_del_tour_confirmation(l3)
-            await call.message.answer(text, reply_markup=markup)
-        elif l2 == 'deltconfirm':
-            await db.tours.del_tour(int(l3))
-            text, markup = await replic_menu_tours()
-            await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-        elif l2 == 'tour':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            text, markup = await replic_menu_edit_tour(int(l3))
-            if os.path.exists(f'images/cards/{l3}.png'):
-                await call.message.answer_photo(photo=FSInputFile(f'images/cards/{l3}.png'), caption=text, reply_markup=markup)
-            else:
-                await call.message.answer(text, reply_markup=markup)
-        elif l2 == 'menu':
-            if l3 == 'admins':
-                text, markup = await replic_menu_admins()
-                await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-            elif l3 == 'tours':
+    try:
+        if await db.tg_admins.check_admin_by_user_id(user_id):
+            calls = str(call.data).split(sep='.')
+            l1 = calls[0]
+            l2 = calls[1]
+            l3 = calls[2]
+            await bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=keyboards.loading_menu)
+            if l2 == 'main':
+                if l3 == 'main':
+                    await bot.edit_message_text(replic_admin_panel, chat_id=user_id, message_id=call.message.message_id, reply_markup=keyboards.menu)
+            elif l2 == 'etourname':
                 await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-                text, markup = await replic_menu_tours()
+                await state.set_state(models.tour_editorState.edit_name)
+                models.editor_tour_id[user_id] = int(l3)
+                await call.message.answer(replic_edit_tour_name)
+            elif l2 == 'etourdesc':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                await state.set_state(models.tour_editorState.edit_description)
+                models.editor_tour_id[user_id] = int(l3)
+                await call.message.answer(replic_edit_tour_description)
+            elif l2 == 'etoirdur':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                await state.set_state(models.tour_editorState.edit_duration)
+                models.editor_tour_id[user_id] = int(l3)
+                await call.message.answer(replic_edit_tour_duration)
+            elif l2 == 'etourimp':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                await state.set_state(models.tour_editorState.edit_important_text)
+                models.editor_tour_id[user_id] = int(l3)
+                await call.message.answer(replic_edit_tour_important_text)
+            elif l2 == 'etourcard':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                await state.set_state(models.tour_editorState.edit_card_image)
+                models.editor_tour_id[user_id] = int(l3)
+                await call.message.answer(replic_edit_tour_image)
+            elif l2 == 'etourback':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                await state.set_state(models.tour_editorState.edit_background_image)
+                models.editor_tour_id[user_id] = int(l3)
+                await call.message.answer(replic_edit_tour_image)
+            elif l2 == 'deltour':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                text, markup = replic_del_tour_confirmation(l3)
                 await call.message.answer(text, reply_markup=markup)
-            elif l3 == 'maintours':
+            elif l2 == 'deltconfirm':
+                await db.tours.del_tour(int(l3))
+                text, markup = await replic_menu_tours()
+                await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+            elif l2 == 'tour':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                text, markup = await replic_menu_edit_tour(int(l3))
+                if os.path.exists(f'images/cards/{l3}.png'):
+                    await call.message.answer_photo(photo=FSInputFile(f'images/cards/{l3}.png'), caption=text, reply_markup=markup)
+                else:
+                    await call.message.answer(text, reply_markup=markup)
+            elif l2 == 'menu':
+                if l3 == 'admins':
+                    text, markup = await replic_menu_admins()
+                    await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+                elif l3 == 'tours':
+                    await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                    text, markup = await replic_menu_tours()
+                    await call.message.answer(text, reply_markup=markup)
+                elif l3 == 'maintours':
+                    text, markup = await replic_menu_maintours()
+                    await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+            elif l2 == 'updatemain':
+                await db.tours.update_main_card(int(l3))
                 text, markup = await replic_menu_maintours()
                 await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-        elif l2 == 'updatemain':
-            await db.tours.update_main_card(int(l3))
-            text, markup = await replic_menu_maintours()
-            await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-        elif l2 == 'add':
-            if l3 == 'tour':
-                tour_id = await db.tours.add_tour()
-                text, markup = await replic_menu_edit_tour(tour_id)
-                await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-        elif l2 == 'del':
-            admin_id = await db.tg_admins.get_admin_user_id_by_id(int(l3))
-            if user_id != admin_id:
-                await db.tg_admins.del_admin_by_id(int(l3))
-            else:
-                await bot.edit_message_text(replic_admin_cannot_delete_self, chat_id=user_id, message_id=call.message.message_id)
-                await asyncio.sleep(2)
-            text, markup = await replic_menu_admins()
-            await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-        elif l2 == 'etourdays':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            text, markup = await replic_menu_editor_days_info(int(l3))
-            await call.message.answer(text, reply_markup=markup)
-        elif l2 == 'adayinfo':
-            await db.tours.add_day_info(int(l3))
-            text, markup = await replic_menu_editor_days_info(int(l3))
-            await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-        elif l2 == 'adddep':
-            await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-            departure_id = await db.info_table.add_item(int(l3))
-            text, markup = await replic_menu_editor_departure(int(l3), departure_id)
-            await call.message.answer(text, reply_markup=markup)
-        else:
-            if ':' in l2:
-                splited_l2 = l2.split(':')
-                k1, k2 = splited_l2[0], splited_l2[1]
-                if k1 == 'etdel':
-                    await db.tours.del_day_info(int(k2), int(l3))
-                    text, markup = await replic_menu_editor_days_info(int(k2))
+            elif l2 == 'add':
+                if l3 == 'tour':
+                    tour_id = await db.tours.add_tour()
+                    text, markup = await replic_menu_edit_tour(tour_id)
                     await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-                elif k1 == 'etd':
-                    models.editor_days_info[user_id] = models.editor_days(int(k2), int(l3))
-                    await bot.edit_message_text(replic_edit_day_info, chat_id=user_id, message_id=call.message.message_id)
-                    await state.set_state(models.tour_editorState.edit_day_info)
-                elif k1 == 'deldep':
-                    await db.info_table.del_item(int(l3))
-                    await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-                    text, markup = await replic_menu_edit_tour(int(k2))
-                    if os.path.exists(f'images/cards/{k2}.png'):
-                        await call.message.answer_photo(photo=FSInputFile(f'images/cards/{k2}.png'), caption=text, reply_markup=markup)
-                    else:
-                        await call.message.answer(text, reply_markup=markup)
-                elif k1 == 'edepbus':
-                    models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
-                    await state.set_state(models.departure_editorState.edit_bus)
-                    await bot.edit_message_text(replic_edit_dep_bus, chat_id=user_id, message_id=call.message.message_id)
-                elif k1 == 'edepoc':
-                    models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
-                    await state.set_state(models.departure_editorState.edit_occupied_seats)
-                    await bot.edit_message_text(replic_edit_dep_occupied_seats, chat_id=user_id, message_id=call.message.message_id)
-                elif k1 == 'edeps':
-                    models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
-                    await state.set_state(models.departure_editorState.edit_seats)
-                    await bot.edit_message_text(replic_edit_dep_seats, chat_id=user_id, message_id=call.message.message_id)
-                elif k1 == 'edepta':
-                    models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
-                    await state.set_state(models.departure_editorState.edit_arrival_time)
-                    await bot.edit_message_text(replic_edit_dep_arrival_time, chat_id=user_id, message_id=call.message.message_id)
-                elif k1 == 'edeptd':
-                    models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
-                    await state.set_state(models.departure_editorState.edit_departure_time)
-                    await bot.edit_message_text(replic_edit_dep_departure_time, chat_id=user_id, message_id=call.message.message_id)
-                elif k1 == 'edepav':
-                    await db.info_table.add_price(int(l3))
-                    text, markup = await replic_menu_editor_departure(int(k2), int(l3))
-                    await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-                elif k1 == 'edepdv':
-                    await db.info_table.del_price(int(l3))
-                    text, markup = await replic_menu_editor_departure(int(k2), int(l3))
-                    await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
-                elif k1 == 'dep':
-                    await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
-                    text, markup = await replic_menu_editor_departure(int(k2), int(l3))
-                    await call.message.answer(text, reply_markup=markup)
+            elif l2 == 'del':
+                admin_id = await db.tg_admins.get_admin_user_id_by_id(int(l3))
+                if user_id != admin_id:
+                    await db.tg_admins.del_admin_by_id(int(l3))
                 else:
-                    if ':' in l3:
-                        splited_l3 = l3.split(':')
-                        j1, j2 = splited_l3[0], splited_l3[1]
-                        if k1 == 'edepp':
-                            models.editor_departure[user_id] = models.editor_dep(int(k2), int(j1))
-                            models.editor_departure[user_id].variation_id = int(j2)
-                            await state.set_state(models.departure_editorState.edit_price)
-                            await bot.edit_message_text(replic_edit_dep_price, chat_id=user_id, message_id=call.message.message_id)
-                        elif k1 == 'edepv':
-                            models.editor_departure[user_id] = models.editor_dep(int(k2), int(j1))
-                            models.editor_departure[user_id].variation_id = int(j2)
-                            await state.set_state(models.departure_editorState.edit_variation)
-                            await bot.edit_message_text(replic_edit_dep_variation, chat_id=user_id, message_id=call.message.message_id)
-
+                    await bot.edit_message_text(replic_admin_cannot_delete_self, chat_id=user_id, message_id=call.message.message_id)
+                    await asyncio.sleep(2)
+                text, markup = await replic_menu_admins()
+                await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+            elif l2 == 'etourdays':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                text, markup = await replic_menu_editor_days_info(int(l3))
+                await call.message.answer(text, reply_markup=markup)
+            elif l2 == 'adayinfo':
+                await db.tours.add_day_info(int(l3))
+                text, markup = await replic_menu_editor_days_info(int(l3))
+                await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+            elif l2 == 'adddep':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                departure_id = await db.info_table.add_item(int(l3))
+                text, markup = await replic_menu_editor_departure(int(l3), departure_id)
+                await call.message.answer(text, reply_markup=markup)
+            else:
+                if ':' in l2:
+                    splited_l2 = l2.split(':')
+                    k1, k2 = splited_l2[0], splited_l2[1]
+                    if k1 == 'etdel':
+                        await db.tours.del_day_info(int(k2), int(l3))
+                        text, markup = await replic_menu_editor_days_info(int(k2))
+                        await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+                    elif k1 == 'etd':
+                        models.editor_days_info[user_id] = models.editor_days(int(k2), int(l3))
+                        await bot.edit_message_text(replic_edit_day_info, chat_id=user_id, message_id=call.message.message_id)
+                        await state.set_state(models.tour_editorState.edit_day_info)
+                    elif k1 == 'deldep':
+                        await db.info_table.del_item(int(l3))
+                        await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                        text, markup = await replic_menu_edit_tour(int(k2))
+                        if os.path.exists(f'images/cards/{k2}.png'):
+                            await call.message.answer_photo(photo=FSInputFile(f'images/cards/{k2}.png'), caption=text, reply_markup=markup)
+                        else:
+                            await call.message.answer(text, reply_markup=markup)
+                    elif k1 == 'edepbus':
+                        models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
+                        await state.set_state(models.departure_editorState.edit_bus)
+                        await bot.edit_message_text(replic_edit_dep_bus, chat_id=user_id, message_id=call.message.message_id)
+                    elif k1 == 'edepoc':
+                        models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
+                        await state.set_state(models.departure_editorState.edit_occupied_seats)
+                        await bot.edit_message_text(replic_edit_dep_occupied_seats, chat_id=user_id, message_id=call.message.message_id)
+                    elif k1 == 'edeps':
+                        models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
+                        await state.set_state(models.departure_editorState.edit_seats)
+                        await bot.edit_message_text(replic_edit_dep_seats, chat_id=user_id, message_id=call.message.message_id)
+                    elif k1 == 'edepta':
+                        models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
+                        await state.set_state(models.departure_editorState.edit_arrival_time)
+                        await bot.edit_message_text(replic_edit_dep_arrival_time, chat_id=user_id, message_id=call.message.message_id)
+                    elif k1 == 'edeptd':
+                        models.editor_departure[user_id] = models.editor_dep(int(k2), int(l3))
+                        await state.set_state(models.departure_editorState.edit_departure_time)
+                        await bot.edit_message_text(replic_edit_dep_departure_time, chat_id=user_id, message_id=call.message.message_id)
+                    elif k1 == 'edepav':
+                        await db.info_table.add_price(int(l3))
+                        text, markup = await replic_menu_editor_departure(int(k2), int(l3))
+                        await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+                    elif k1 == 'edepdv':
+                        await db.info_table.del_price(int(l3))
+                        text, markup = await replic_menu_editor_departure(int(k2), int(l3))
+                        await bot.edit_message_text(text, chat_id=user_id, message_id=call.message.message_id, reply_markup=markup)
+                    elif k1 == 'dep':
+                        await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                        text, markup = await replic_menu_editor_departure(int(k2), int(l3))
+                        await call.message.answer(text, reply_markup=markup)
+                    else:
+                        if ':' in l3:
+                            splited_l3 = l3.split(':')
+                            j1, j2 = splited_l3[0], splited_l3[1]
+                            if k1 == 'edepp':
+                                models.editor_departure[user_id] = models.editor_dep(int(k2), int(j1))
+                                models.editor_departure[user_id].variation_id = int(j2)
+                                await state.set_state(models.departure_editorState.edit_price)
+                                await bot.edit_message_text(replic_edit_dep_price, chat_id=user_id, message_id=call.message.message_id)
+                            elif k1 == 'edepv':
+                                models.editor_departure[user_id] = models.editor_dep(int(k2), int(j1))
+                                models.editor_departure[user_id].variation_id = int(j2)
+                                await state.set_state(models.departure_editorState.edit_variation)
+                                await bot.edit_message_text(replic_edit_dep_variation, chat_id=user_id, message_id=call.message.message_id)
+    except Exception as e:
+        print(e)
 
 

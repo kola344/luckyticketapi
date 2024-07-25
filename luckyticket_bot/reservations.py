@@ -3,10 +3,10 @@ import config
 import db
 from aiogram.types import InlineKeyboardButton, KeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
 
-async def send_reservation_to_chat(tour_id, departure_id, name, phone_number, email, telegram, comment, variations):
+async def send_reservation_to_chat(tour_id, departure_id, name, phone_number, email, social_net, comment, variations):
     tour_name = await db.tours.get_tour_name_by_id(tour_id)
     departure_data = await db.info_table.get_item_info(departure_id)
-    text = (f'ТУР {tour_id}. Отправление от: {departure_data["departure_time"]}\n{tour_name}\nНовая бронь на имя {name}\nemail: {email}\ntelegram: {telegram}\nТелефон: {phone_number}\n\n{comment}\n\n')
+    text = (f'ТУР {tour_name}. Отправление от: {departure_data["departure_time"]}\nНовая бронь на имя {name}\nemail: {email}\nСоцсеть: {social_net}\nТелефон: {phone_number}\n\n{comment}\n\n')
     variations_data = await db.info_table.get_prices(departure_id)
     print(variations_data)
     price = 0
