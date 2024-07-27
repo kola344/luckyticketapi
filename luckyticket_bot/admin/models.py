@@ -16,6 +16,7 @@ class tour_editorState(StatesGroup):
     edit_card_image = State()
     edit_background_image = State()
     edit_day_info = State()
+    edit_price = State()
 
 editor_departure = {}
 class editor_dep:

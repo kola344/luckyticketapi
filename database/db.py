@@ -189,7 +189,8 @@ class tours:
                                      days_info JSON,
                                      important_text TEXT,
                                      description TEXT,
-                                     main_card INT)''')
+                                     main_card INT,
+                                     price INT)''')
 
     async def get_main_cards(self):
         async with self.db.acquire() as connection:
@@ -258,6 +259,10 @@ class tours:
             await connection.execute('''
                             UPDATE tours SET name = $1 WHERE id = $2
                         ''', name, tour_id)
+
+    async def update_price(self, tour_id, price):
+        async with self.db.acquire() as connection:
+            await connection.execute('''UPDATE tours SET price = $1 WHERE id = $2''', price, tour_id)
 
     async def update_main_card(self, tour_id):
         async with self.db.acquire() as connection:

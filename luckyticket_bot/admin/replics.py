@@ -23,6 +23,7 @@ replic_edit_dep_int_error = 'Введенное значение должно б
 replic_edit_dep_occupied_seats_error = 'Число занятых мест не должно превышать общее число мест'
 replic_edit_dep_seats_error = 'Общее число мест не должно быть меньше занятого числа мест'
 replic_wait_please = 'Пожалуйста, подождите'
+replic_edit_tour_price = 'Введите новую цену'
 
 def replic_del_tour_confirmation(tour_id):
     text = 'Вы действительно хотите удалить тур?'
@@ -72,13 +73,14 @@ async def replic_menu_maintours():
 
 async def replic_menu_edit_tour(tour_id):
     tour_data = await db.tours.get_tour_info(tour_id)
-    text = f'{tour_data["name"]}\n{tour_data["description"]}\nДлительность: {tour_data["duration"]}'
+    text = f'{tour_data["name"]}\n{tour_data["description"]}\nДлительность: {tour_data["duration"]}\nЦена: {tour_data["price"]}'
     keyboard = []
     keyboard.append([InlineKeyboardButton(text='Название', callback_data=f'admin.etourname.{tour_id}')])
     keyboard.append([InlineKeyboardButton(text='Описание', callback_data=f'admin.etourdesc.{tour_id}')])
     keyboard.append([InlineKeyboardButton(text='Длительность', callback_data=f'admin.etoirdur.{tour_id}')])
     keyboard.append([InlineKeyboardButton(text='Описание дней', callback_data=f'admin.etourdays.{tour_id}')])
     keyboard.append([InlineKeyboardButton(text='Важный текст', callback_data=f'admin.etourimp.{tour_id}')])
+    keyboard.append([InlineKeyboardButton(text='Цена', callback_data=f'admin.etourprice.{tour_id}')])
     keyboard.append([InlineKeyboardButton(text='🖼️ Карточка', callback_data=f'admin.etourcard.{tour_id}')])
     keyboard.append([InlineKeyboardButton(text='🖼️ Фон', callback_data=f'admin.etourback.{tour_id}')])
     for i in tour_data["info_table"]:

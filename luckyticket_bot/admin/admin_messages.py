@@ -14,6 +14,18 @@ from luckyticket_bot.bot_init import bot
 
 router = Router()
 
+@router.message(models.tour_editorState.edit_price, F.text)
+async def edit_priceFunc(message: Message, state: FSMContext):
+    try:
+        validate = int(message.text)
+        tour_id = models.editor_tour_id[message.chat.id]
+        await db.tours.update_price(tour_id, validate)
+        text, markup = await replic_menu_edit_tour(tour_id)
+        await message.answer(text, reply_markup=markup)
+    except Exception as e:
+        await message.answer(replic_edit_dep_int_error)
+        print(e)
+
 @router.message(models.departure_editorState.edit_price, F.text)
 async def edit_dep_priceFunc(message: Message, state: FSMContext):
     try:
@@ -292,6 +304,11 @@ async def callback(call, state: FSMContext):
                 await state.set_state(models.tour_editorState.edit_description)
                 models.editor_tour_id[user_id] = int(l3)
                 await call.message.answer(replic_edit_tour_description)
+            elif l2 == 'etourprice':
+                await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
+                await state.set_state(models.tour_editorState.edit_price)
+                models.editor_tour_id[user_id] = int(l3)
+                await call.message.answer(replic_edit_tour_price)
             elif l2 == 'etoirdur':
                 await bot.delete_message(chat_id=user_id, message_id=call.message.message_id)
                 await state.set_state(models.tour_editorState.edit_duration)
