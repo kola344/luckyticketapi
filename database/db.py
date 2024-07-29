@@ -194,12 +194,12 @@ class tours:
 
     async def get_main_cards(self):
         async with self.db.acquire() as connection:
-            cursor = await connection.fetch('''SELECT id, name, description, duration, background_image, price FROM tours WHERE main_card = $1''', 1)
+            cursor = await connection.fetch('''SELECT id, name, description, duration, background_image, price FROM tours WHERE main_card = $1 ORDER BY id''', 1)
             return [dict(data) for data in cursor]
 
     async def get_cards(self):
         async with self.db.acquire() as connection:
-            cursor = await connection.fetch('''SELECT id, name, description, duration, card_image, price FROM tours''')
+            cursor = await connection.fetch('''SELECT id, name, description, duration, card_image, price FROM tours ORDER BY id''')
             result = []
             for data in cursor:
                 prices = await db.info_table.get_prices(data["id"])
@@ -227,7 +227,7 @@ class tours:
 
     async def get_tours_list(self):
         async with self.db.acquire() as connection:
-            cursor = await connection.fetch('''SELECT id, name, main_card FROM tours''')
+            cursor = await connection.fetch('''SELECT id, name, main_card FROM tours ORDER BY id''')
             return [dict(data) for data in cursor]
 
     async def get_tour_info(self, tour_id):
