@@ -21,7 +21,10 @@ async def send_reservation_to_chat(tour_id, departure_id, name, phone_number, em
         price += variation_price
         text += f'{variation_person} - {variation_name}: {variation_price}\n'
     text += f'ИТОГО: {price}'
-
+    if departure_data["seats"] is None:
+        departure_data["seats"] = 0
+    if departure_data["occupied_seats"] is None:
+        departure_data["occupied_seats"] = 0
     markup = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='✅ Принять бронь', callback_data=f'res.accept:{departure_id}.{count}')],
                                                     [InlineKeyboardButton(text='❌ Отменить бронь', callback_data=f'res.do.cancel')],
                                                    [InlineKeyboardButton(text=f'Свободно мест: {departure_data["seats"] - departure_data["occupied_seats"]}', callback_data='none')]])
