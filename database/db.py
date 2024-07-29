@@ -138,7 +138,10 @@ class info_table:
     async def add_occupied_seats(self, item_id, count):
         async with self.db.acquire() as connection:
             row = await connection.fetchrow('''SELECT occupied_seats FROM info_table WHERE id = $1''', item_id)
-            new_occupied_seats = row[0] + count
+            occupied_seats = row[0]
+            if occupied_seats is None:
+                occupied_seats = 0
+            new_occupied_seats = occupied_seats + count
             await self.update_occupied_seats(item_id, new_occupied_seats)
 
     async def update_seats(self, item_id, seats):
