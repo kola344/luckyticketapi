@@ -205,11 +205,14 @@ class tours:
             cursor = await connection.fetch('''SELECT id, name, description, duration, card_image, price FROM tours ORDER BY id''')
             result = []
             for data in cursor:
-                # print(data)
-                prices = await db.info_table.get_prices(data["id"])
-                # print(prices)
+                print(data)
                 result_data = dict(data)
-                # result_data["prices"] = prices
+                info_table = await db.info_table.get_items(data["id"])
+                if info_table != []:
+                    prices = await db.info_table.get_prices(info_table[0]["id"])
+                    result_data["prices"] = prices
+                else:
+                    result_data["prices"] = {"variation": "default", "price": 0}
                 result.append(result_data)
             return result
 
