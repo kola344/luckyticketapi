@@ -205,9 +205,11 @@ class tours:
             cursor = await connection.fetch('''SELECT id, name, description, duration, card_image, price FROM tours ORDER BY id''')
             result = []
             for data in cursor:
+                # print(data)
                 prices = await db.info_table.get_prices(data["id"])
+                # print(prices)
                 result_data = dict(data)
-                result_data["prices"] = prices
+                # result_data["prices"] = prices
                 result.append(result_data)
             return result
 
