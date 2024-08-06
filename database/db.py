@@ -212,7 +212,7 @@ class tours:
                     prices = await db.info_table.get_prices(info_table[0]["id"])
                     result_data["prices"] = prices
                 else:
-                    result_data["prices"] = {"variation": "default", "price": 0}
+                    result_data["prices"] = []
                 result.append(result_data)
             return result
 
