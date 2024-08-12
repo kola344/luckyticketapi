@@ -7,7 +7,7 @@ info_table = db.info_table()
 card_images = db.card_images()
 background_images = db.background_images()
 async def initialize(folder = 'database/'):
-    db = await create_pool(user='db_user', password='BY9VmrrTNXZTDp2uSUJYKtpNHMNGohZN', database='lucky_ticket', host="dpg-cqbn4leehbks73dr97j0-a.oregon-postgres.render.com")
+    db = await create_pool(user='gen_user', password='b%|#bSc0!YhAOu', database='default_db', host="147.45.138.15")
     await tg_admins.connect(db)
     await tg_admins.create_table()
     await tours.connect(db)
