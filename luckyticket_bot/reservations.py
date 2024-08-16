@@ -16,6 +16,7 @@ async def send_reservation_to_chat(tour_id, departure_id, name, phone_number, em
     price = 0
     count = 0
     for i in range(len(variations)):
+        print(variations.name, variations.variation)
         print(i)
         print(variations_data)
         variation_data = variations_data[i]
