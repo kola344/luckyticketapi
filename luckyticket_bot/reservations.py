@@ -5,6 +5,7 @@ from aiogram.types import InlineKeyboardButton, KeyboardButton, InlineKeyboardMa
 
 async def send_reservation_to_chat(tour_id, departure_id, name, phone_number, email, social_net, comment, variations):
     print(variations)
+
     print(departure_id)
     print(tour_id)
     tour_name = await db.tours.get_tour_name_by_id(tour_id)
@@ -14,7 +15,7 @@ async def send_reservation_to_chat(tour_id, departure_id, name, phone_number, em
     print(variations_data)
     price = 0
     count = 0
-    for i in range(len(variations)):
+    for i in range(len(variations) - 1):
         variation_data = variations_data[i]
         print(variation_data)
         variation_person = variations[i].name
