@@ -122,7 +122,7 @@ async def replic_menu_editor_departure(tour_id, departure_id):
     keyboard.append([InlineKeyboardButton(text='Дата прибытия', callback_data=f'admin.edepta:{tour_id}.{departure_id}')])
     keyboard.append([InlineKeyboardButton(text='Всего мест', callback_data=f'admin.edeps:{tour_id}.{departure_id}')])
     keyboard.append([InlineKeyboardButton(text='Мест занято', callback_data=f'admin.edepoc:{tour_id}.{departure_id}')])
-    keyboard.append([InlineKeyboardButton(text='Автобус', callback_data=f'admin.edepbus:{tour_id}.{departure_id}')])
+    keyboard.append([InlineKeyboardButton(text='Транспорт', callback_data=f'admin.edepbus:{tour_id}.{departure_id}')])
     keyboard.append([InlineKeyboardButton(text='❌ Удалить', callback_data=f'admin.deldep:{tour_id}.{departure_id}')])
     keyboard.append([InlineKeyboardButton(text='⬅️ Назад', callback_data=f'admin.tour.{tour_id}')])
     markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -130,7 +130,7 @@ async def replic_menu_editor_departure(tour_id, departure_id):
         data["seats"] = 0
     if data["occupied_seats"] is None:
         data['occupied_seats'] = 0
-    text = (f'Отправление от: {data["departure_time"]}\nДо: {data["arrival_time"]}\nАвтобус: {data["bus"]}\nЗанято мест: {data["occupied_seats"]}\nСвободных мест: {data["seats"] - data["occupied_seats"]}\nВсего мест: {data["seats"]}')
+    text = (f'Отправление от: {data["departure_time"]}\nДо: {data["arrival_time"]}\nТранспорт: {data["bus"]}\nЗанято мест: {data["occupied_seats"]}\nСвободных мест: {data["seats"] - data["occupied_seats"]}\nВсего мест: {data["seats"]}')
     return text, markup
 
 
